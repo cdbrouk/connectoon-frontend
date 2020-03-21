@@ -1,25 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
+import MainHeader from './components/main/MainHeader';
+import MainBanner from './components/main/MainBanner';
+import MainTemplate from './components/main/MainTemplate';
+import WebToonPage from './pages/WebToonPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainTemplate>
+      <MainHeader />
+      <MainBanner />
+      <Switch>
+        <Route path="/" component={WebToonPage} exact />
+        <Route path="/webtoon" component={WebToonPage} />
+      </Switch>
+    </MainTemplate>
   );
 }
 
