@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import useSetSearchCategory from './hooks/useSetSearchCategory';
 
 interface CategoryItemProps {
   selected: boolean;
@@ -45,19 +46,26 @@ const Chips = styled.div`
 
 const WebToonCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState('story');
+  const setSearchCategory = useSetSearchCategory();
+
+  const onClickCategory = (text: string) => {
+    setSelectedCategory(text);
+    setSearchCategory(text);
+  };
+
   return (
     <Block>
       <Category>
         <Inner>
           <CategoryItem
             selected={selectedCategory === 'story'}
-            onClick={() => setSelectedCategory('story')}
+            onClick={() => onClickCategory('story')}
           >
             스토리
           </CategoryItem>
           <CategoryItem
             selected={selectedCategory === 'style'}
-            onClick={() => setSelectedCategory('style')}
+            onClick={() => onClickCategory('style')}
           >
             작화
           </CategoryItem>

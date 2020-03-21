@@ -6,7 +6,6 @@ const Block = styled.div``;
 
 const Banner = styled.div`
   display: flex;
-  width: 1400px;
   flex-direction: column;
   height: 300px;
   justify-content: center;
