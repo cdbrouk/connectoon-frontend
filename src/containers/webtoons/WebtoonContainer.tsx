@@ -18,7 +18,6 @@ const WebtoonContainer = () => {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
         },
         data: {
           query: `
