@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { Like, Reply } from '../../static/svg';
 import useShowModal from '../../lib/hooks/useShowModal';
 import { WebToon } from '../../reducers/webtoons';
 import { SERVER_ADDRESS } from '../../lib/utils';
+import { RootState } from '../../reducers';
 
 interface ThumbnailProps {
   bgUrl: string;
@@ -23,7 +25,8 @@ const Thumbnail = styled.div`
   align-items: center;
   width: 283px;
   height: 283px;
-  background-image: url(${(props: ThumbnailProps) => SERVER_ADDRESS + props.bgUrl});
+  background-image: url(${(props: ThumbnailProps) =>
+    SERVER_ADDRESS + props.bgUrl});
 `;
 
 const StatusBar = styled.div`
@@ -71,25 +74,57 @@ const Authorname = styled.p`
   font-size: 11px;
 `;
 
+const ExtraBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ExtraTitle = styled(Title)`
+  color: black;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const ExtraAuthorName = styled(Authorname)`
+  color: #767676;
+`;
+
 interface WebToonCardProps {
   webtoon: WebToon;
 }
 
 const WebToonCard = ({ webtoon }: WebToonCardProps) => {
   const showModal = useShowModal();
+  const searchForm = useSelector((store: RootState) => store.searchForm);
   return (
     <CardTemplate onClick={() => showModal()}>
-      <Thumbnail bgUrl={webtoon.thumbnailStory}>
-        <Title>{webtoon.title}</Title>
-        <Devider />
-        {/** Need Synopsis Data */}
-        <Synopsis>시놉시스 데이터</Synopsis>
-        <Authorname>
-          {webtoon.author.name}
-          {' '}
-          작가
-        </Authorname>
-      </Thumbnail>
+      {searchForm.category === 'story' ? (
+        <Thumbnail bgUrl={webtoon.thumbnailStory}>
+          <Title>{webtoon.title}</Title>
+          <Devider />
+          {/** Need Synopsis Data */}
+          <Synopsis>시놉시스 데이터</Synopsis>
+          <Authorname>
+            {webtoon.author.name}
+            {' '}
+            작가
+          </Authorname>
+        </Thumbnail>
+      ) : (
+        <>
+          <Thumbnail bgUrl={webtoon.thumbnailStyle} />
+          <ExtraBlock>
+            <ExtraTitle>{webtoon.title}</ExtraTitle>
+            <ExtraAuthorName>
+              {webtoon.author.name}
+              {' '}
+              작가
+            </ExtraAuthorName>
+          </ExtraBlock>
+        </>
+      )}
       <StatusBar>
         <StatusBarItem>
           <Like />

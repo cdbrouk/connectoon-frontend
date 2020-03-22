@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setWebtoons } from '../../reducers/webtoons';
 import { GRAPHQL_ADDRESS } from '../../lib/utils';
 import WebToonList from '../../components/webtoon/WebToonList';
+import { RootState } from '../../reducers';
+import { finishedFetch, fetchWebtoons } from '../../reducers/searchForm';
 
 const WebtoonContainer = () => {
   // Effect 부분 hooks로 별도 관리 필요
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const searchForm = useSelector((store: RootState) => store.searchForm);
+
+  /** Initialize */
   useEffect(() => {
-    if (!loading) return;
+    dispatch(fetchWebtoons());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!searchForm.loading) return;
     const axiosWebtoon = async () => {
       const response = await axios({
         url: GRAPHQL_ADDRESS,
@@ -21,7 +29,7 @@ const WebtoonContainer = () => {
         data: {
           query: `
             {
-              webtoons {
+              webtoons(${searchForm.category}:"${searchForm.chip}") {
                 id
                 title
                 author {
@@ -44,10 +52,14 @@ const WebtoonContainer = () => {
         },
       });
       dispatch(setWebtoons(response.data.data.webtoons));
-      setLoading(false);
+      dispatch(finishedFetch());
     };
     axiosWebtoon();
-  }, [loading, dispatch]);
+  }, [dispatch, searchForm]);
+
+  /** Loading Component */
+  if (searchForm.loading) return <></>;
+
   return <WebToonList />;
 };
 
