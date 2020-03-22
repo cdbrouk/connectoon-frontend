@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import WebToonCard from './WebToonCard';
+import useCallWebtoonReducer from '../../containers/webtoons/hooks/useCallWebtoonReducer';
 
 const Block = styled.div``;
 
@@ -14,53 +15,15 @@ const Inner = styled.div`
   flex-wrap: wrap;
 `;
 
-const WebToonList = () => {  
-
+const WebToonList = () => {
+  const { webtoons } = useCallWebtoonReducer();
   return (
     <Block>
       <Inner>
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}          
-        />
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}
-        />
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}
-        />
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}
-        />
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}
-        />
-        <WebToonCard
-          title="치즈인더트랩"
-          authorname="망난희"
-          synopsis="평범한 대학생 홍설 평범하지 않은 유정을 만나 ... "
-          like={100}
-          replys={999}
-        />
+        {webtoons &&
+          webtoons.map(webtoon => (
+            <WebToonCard webtoon={webtoon} key={webtoon.id} />
+          ))}
       </Inner>
     </Block>
   );

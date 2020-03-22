@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Thumbnail as thumbnail } from '../../static/images';
 import { Like, Reply } from '../../static/svg';
 import useShowModal from '../../lib/hooks/useShowModal';
+import { WebToon } from '../../reducers/webtoons';
+import { SERVER_ADDRESS } from '../../lib/utils';
+
+interface ThumbnailProps {
+  bgUrl: string;
+}
 
 const CardTemplate = styled.div`
   width: 283px;
@@ -18,7 +23,7 @@ const Thumbnail = styled.div`
   align-items: center;
   width: 283px;
   height: 283px;
-  background-image: url(${thumbnail});
+  background-image: url(${(props: ThumbnailProps) => SERVER_ADDRESS + props.bgUrl});
 `;
 
 const StatusBar = styled.div`
@@ -56,6 +61,7 @@ const Devider = styled.div`
 
 const Synopsis = styled.p`
   width: 122px;
+  text-align: center;
   font-size: 11px;
   color: white;
 `;
@@ -66,29 +72,20 @@ const Authorname = styled.p`
 `;
 
 interface WebToonCardProps {
-  title: string;
-  authorname: string;
-  synopsis: string;
-  like: number;
-  replys: number;
+  webtoon: WebToon;
 }
 
-const WebToonCard = ({
-  title,
-  authorname,
-  synopsis,
-  like,
-  replys,
-}: WebToonCardProps) => {
+const WebToonCard = ({ webtoon }: WebToonCardProps) => {
   const showModal = useShowModal();
   return (
-    <CardTemplate onClick={()=>showModal()}>
-      <Thumbnail>
-        <Title>{title}</Title>
+    <CardTemplate onClick={() => showModal()}>
+      <Thumbnail bgUrl={webtoon.thumbnailStory}>
+        <Title>{webtoon.title}</Title>
         <Devider />
-        <Synopsis>{synopsis}</Synopsis>
+        {/** Need Synopsis Data */}
+        <Synopsis>시놉시스 데이터</Synopsis>
         <Authorname>
-          {authorname}
+          {webtoon.author.name}
           {' '}
           작가
         </Authorname>
@@ -96,11 +93,12 @@ const WebToonCard = ({
       <StatusBar>
         <StatusBarItem>
           <Like />
-          <StatusBarText>{like}</StatusBarText>
+          <StatusBarText>{webtoon.like}</StatusBarText>
         </StatusBarItem>
         <StatusBarItem>
           <Reply />
-          <StatusBarText>{replys}</StatusBarText>
+          {/* Need Reply Data */}
+          <StatusBarText>999+</StatusBarText>
         </StatusBarItem>
       </StatusBar>
     </CardTemplate>

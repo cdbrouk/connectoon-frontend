@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import useCallWebtoonReducer from './hooks/useCallWebtoonReducer';
-import { callWebtoons } from '../../reducers/webtoons';
+import { setWebtoons } from '../../reducers/webtoons';
 import { GRAPHQL_ADDRESS } from '../../lib/utils';
 import WebToonList from '../../components/webtoon/WebToonList';
 
 const WebtoonContainer = () => {
+  // Effect 부분 hooks로 별도 관리 필요
   const dispatch = useDispatch();
-  const { loading, webtoons, selectedWebToon } = useCallWebtoonReducer();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (loading) return;
-    dispatch(callWebtoons());
+    if (!loading) return;
     const axiosWebtoon = async () => {
       const response = await axios({
-        url: 'http://localhost:8000/graphql/',
+        url: GRAPHQL_ADDRESS,
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -24,12 +23,28 @@ const WebtoonContainer = () => {
             {
               webtoons {
                 id
+                title
+                author {
+                  name
+                  title
+                  career
+                  address
+                  age
+                }   
+                story
+                style
+                thumbnailStory
+                thumbnailStyle
+                like
+                createDate
+                genre            
               }
             }
-          `
-        }
+          `,
+        },
       });
-      console.log(response);
+      dispatch(setWebtoons(response.data.data.webtoons));
+      setLoading(false);
     };
     axiosWebtoon();
   }, [loading, dispatch]);
