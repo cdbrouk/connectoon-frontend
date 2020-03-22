@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Profile, ToonImg } from '../../static/images';
+import { useSelector } from 'react-redux';
+import { Profile } from '../../static/images';
+import { SERVER_ADDRESS } from '../../lib/utils';
+import { RootState } from '../../reducers';
 
 const ModalBackGround = styled.div`
   display: flex;
   padding-top: 297px;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  height: 100%;
+  height: ${document.documentElement.scrollHeight};
   z-index: 10;
   justify-content: center;
   align-items: center;
@@ -81,7 +84,15 @@ const Rows = styled.div`
 const ModalBody = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: gray;
+  align-items: center;
+  background-color: white;
+  height: 100%;
+  padding-top: 64px;
+  padding-bottom: 64px;
+`;
+
+const ToonImgBlock = styled.div`
+  display: flex;
   height: 100%;
 `;
 
@@ -90,7 +101,23 @@ const Toon = styled.img`
   height: 1600px;
 `;
 
-const ModalComponent = () => {
+const EmptyToon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1040px;
+  height: 800px;
+  color: black;
+`;
+
+interface ModalComponentProps {
+  toonImg: string;
+}
+
+const ModalComponent = ({ toonImg }: ModalComponentProps) => {
+  const selectedWebtoon = useSelector(
+    (store: RootState) => store.webtoons.selectedWebToon
+  );
   return (
     <ModalBackGround>
       <ModalTemplate>
@@ -98,17 +125,28 @@ const ModalComponent = () => {
           <HeaderLeft>
             <AuthorThumbnail src={Profile} />
             <HeaderDetail>
-              <HeaderTitle>치즈인더트랩</HeaderTitle>
+              <HeaderTitle>{selectedWebtoon?.title}</HeaderTitle>
               <Rows>
-                <HeaderAuthorName>망난희</HeaderAuthorName>
-                <HeaderDateGenre>2020.01.05 로맨스 | 스릴러</HeaderDateGenre>
+                <HeaderAuthorName>
+                  {selectedWebtoon?.author.name}
+                </HeaderAuthorName>
+                <HeaderDateGenre>
+                  {selectedWebtoon?.createDate}
+                  {selectedWebtoon?.genre}
+                </HeaderDateGenre>
               </Rows>
             </HeaderDetail>
           </HeaderLeft>
           <HeaderRight>문의하기</HeaderRight>
         </ModalHeader>
         <ModalBody>
-          <Toon src={ToonImg} />
+          <ToonImgBlock>
+            {toonImg !== '' ? (
+              <Toon src={SERVER_ADDRESS + toonImg} />
+            ) : (
+              <EmptyToon>만화가 아직 준비되지 않았습니다.</EmptyToon>
+            )}
+          </ToonImgBlock>
         </ModalBody>
       </ModalTemplate>
     </ModalBackGround>

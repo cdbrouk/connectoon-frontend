@@ -6,6 +6,7 @@ import useShowModal from '../../lib/hooks/useShowModal';
 import { WebToon } from '../../reducers/webtoons';
 import { SERVER_ADDRESS } from '../../lib/utils';
 import { RootState } from '../../reducers';
+import useSelectedWebToon from './hooks/useSelectedWebToon';
 
 interface ThumbnailProps {
   bgUrl: string;
@@ -96,10 +97,17 @@ interface WebToonCardProps {
 }
 
 const WebToonCard = ({ webtoon }: WebToonCardProps) => {
+  // showmodal 하고 selectwebtoon을 같이 만들었어야하는데 엉킴
   const showModal = useShowModal();
+  const selectWebtoon = useSelectedWebToon();
   const searchForm = useSelector((store: RootState) => store.searchForm);
   return (
-    <CardTemplate onClick={() => showModal()}>
+    <CardTemplate
+      onClick={() => {
+        showModal();
+        selectWebtoon(webtoon);
+      }}
+    >
       {searchForm.category === 'story' ? (
         <Thumbnail bgUrl={webtoon.thumbnailStory}>
           <Title>{webtoon.title}</Title>

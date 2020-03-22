@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import ModalComponent from '../modal/ModalComponent';
 import { RootState } from '../../reducers';
 import useOffModal from '../../lib/hooks/useOffModal';
+import ModalContainer from '../../containers/webtoon/ModalContainer';
 
 interface MainTemplateProps {
   children: React.ReactNode;
@@ -26,7 +26,7 @@ const MainTemplate = ({ children }: MainTemplateProps) => {
   };
   return (
     <Block onClick={() => onClick()}>
-      {styles.modal && <ModalComponent />}
+      {styles.modal && <ModalContainer />}
       <Inner>{children}</Inner>
     </Block>
   );
