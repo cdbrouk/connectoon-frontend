@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useSetSearchCategory from './hooks/useSetSearchCategory';
+import WebToonChip from './WebToonChip';
 
 interface CategoryItemProps {
   selected: boolean;
@@ -14,7 +15,7 @@ const Inner = styled.div`
   width: 1200px;
   display: flex;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto;  
 `;
 
 const Category = styled.div`
@@ -39,7 +40,10 @@ const CategoryItem = styled.div`
   cursor: pointer;
 `;
 
-const Chips = styled.div`
+const ChipBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 95px;
   background-color: #e6e6e6;
 `;
@@ -71,7 +75,20 @@ const WebToonCategory = () => {
           </CategoryItem>
         </Inner>
       </Category>
-      <Chips />
+      <ChipBlock>
+        <Inner>
+          <WebToonChip item="전체보기" />
+          <WebToonChip item="순정" />
+          <WebToonChip item="일상" />
+          <WebToonChip item="개그" />
+          <WebToonChip item="판타지" />
+          <WebToonChip item="액션" />
+          <WebToonChip item="드라마" />
+          <WebToonChip item="스릴러" />
+          <WebToonChip item="시대극" />
+          <WebToonChip item="스포츠" />
+        </Inner>
+      </ChipBlock>
     </Block>
   );
 };

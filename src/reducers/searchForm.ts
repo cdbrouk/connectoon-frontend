@@ -17,7 +17,7 @@ export interface SearchFormState {
 
 const initialState: SearchFormState = {
   category: 'story',
-  chip: 'all'
+  chip: '전체보기'
 };
 
 const searchForm = createReducer<SearchFormState, SearchFormActions>(
