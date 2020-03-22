@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import ModalComponent from '../modal/ModalComponent';
-import {RootState} from '../../reducers';
+import { RootState } from '../../reducers';
+import useOffModal from '../../lib/hooks/useOffModal';
 
 interface MainTemplateProps {
   children: React.ReactNode;
 }
 
-const Block = styled.div`
-`;
+const Block = styled.div``;
 
 const Inner = styled.div`
   width: 1440px;
@@ -19,8 +19,13 @@ const Inner = styled.div`
 
 const MainTemplate = ({ children }: MainTemplateProps) => {
   const styles = useSelector((store: RootState) => store.styles);
+  const offModal = useOffModal();
+  const onClick = () => {
+    if (!styles.modal) return;
+    offModal();
+  };
   return (
-    <Block>
+    <Block onClick={() => onClick()}>
       {styles.modal && <ModalComponent />}
       <Inner>{children}</Inner>
     </Block>
