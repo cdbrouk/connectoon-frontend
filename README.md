@@ -21,6 +21,7 @@ Connectoon BackEnd - [Connectoon-BackEnd](https://github.com/cdbrouk/connectoon-
 
 ## 기록사항
 
+- 상세보기 화면은 화면 아무곳이나 다시 클릭하면 사라지도록 구성
 - 우상단 페이지 라우팅 반영 (없는 페이지 구현 안됨)
 - 스토리, 작화 및 하위 태그 별 검색 반영
 - axios 관련 부분 backend에 post 요청 시 options로 method가 변하는 문제 -> Python 서버 CORS 적용
